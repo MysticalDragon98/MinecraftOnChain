@@ -1,0 +1,280 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "createLand",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "LandCreated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"indexed": false,
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "source",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "target",
+				"type": "address"
+			}
+		],
+		"name": "LandTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			},
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferLand",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			}
+		],
+		"name": "accessFor",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "access",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			}
+		],
+		"name": "landOwner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "",
+				"type": "int256"
+			}
+		],
+		"name": "lands",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "x",
+				"type": "int256"
+			},
+			{
+				"internalType": "int256",
+				"name": "y",
+				"type": "int256"
+			},
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

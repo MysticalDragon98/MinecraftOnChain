@@ -1,0 +1,20 @@
+{
+  "name": "MinecraftOnChain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Camilo Torres <camilotd1999@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@truffle/hdwallet-provider": "^1.4.1",
+    "@types/node": "^15.12.4",
+    "chalk": "^4.1.1",
+    "termx": "^1.2.5",
+    "typescript": "^4.3.4",
+    "web3": "^1.3.6"
+  },
+  "scripts": {
+    "start": "ts-node index.ts",
+    "new": "./scripts/bash/new-world.bat",
+    "play": "./scripts/bash/run-world.bat"
+  }
+}

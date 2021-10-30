@@ -1,0 +1,47 @@
+command /store <integer> <item>:
+    description: Send an amount of items to the cloud
+    executable by: players
+    aliases: /s
+    trigger:
+        if player has arg-1 of arg-2:
+            remove arg-1 of arg-2 from player's inventory
+            execute console command "/say (Event) Stake %name of player% %arg-1% %arg-2%"
+
+command /withdraw <integer> <item>:
+    description: Withdraws an amount of items from the cloud
+    executable by: players
+    aliases: /w
+    trigger:
+        execute console command "/say (Event) Withdraw %name of player% %arg-1% %arg-2%"
+
+command /newtoken <text>:
+    description: Send an amount of items to the cloud
+    executable by: players
+    permission: skript.give
+    trigger:
+        execute console command "/say (Event) NewToken %name of player% %arg-1%"
+
+command /supergive <player> <item> <integer>:
+    description: Giveitem compatible with Skript
+    executable by: players and console
+    permission: skript.give
+    trigger:
+        give arg-3 of arg-2 to player arg-1
+
+command /balance <item>:
+    description: View quantity of item on your balance
+    executable by: players
+    trigger:
+        execute console command "/say (Event) ViewBalance %name of player% %arg-1%"
+
+command /quote <integer> <item> <item>:
+    description: Quote a swap from one item for another
+    executable by: players
+    trigger:
+        execute console command "/say (Event) Quote %name of player% %arg-1% %arg-2% <-> %arg-3%"
+
+command /claim:
+    description: Claim a free land
+    executable by: players
+    trigger:
+        execute console command "/say (Event) Claim %name of player% %player's world% %player's location%"
