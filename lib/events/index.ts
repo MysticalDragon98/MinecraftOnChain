@@ -101,5 +101,5 @@ export async function Claim (username: string, world: string, ...positionData: s
 }
 
 import { minecraft } from "../../index";
-import { fromEventPattern } from "rxjs";import { $get, $set } from "../state";
+import { $get, $set } from "../state";
 

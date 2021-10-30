@@ -14,4 +14,8 @@ export class User {
         this.bridge.execute(`tell ${this.name} ${text}`);
     }
 
+    static async register (bridge: MinecraftBridge, name: string, address: string) {
+        await bridge.registry.methods.register(name, address).send(bridge.senddata);
+    }
+
 }

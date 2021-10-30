@@ -13,11 +13,17 @@ const log = verboseLog("BRIDGE");
 const commandRegex = /^\[.+?\] \[Server thread\/INFO\]: \[Server\] \(Event\) /;
 
 interface BridgeOptions {
-    // Java & MC
-        javaBin: string;
-        spigotBin: string;
-        serverPath: string;
     // Ethereum
+        host: string;
+        ports: {
+            sshd: number;
+            logs: number;
+        }
+
+        username: string;
+        sshKey: string;
+        logsPath: string;
+
         // Account
             address: string;
             privateKey: string;
@@ -50,6 +56,9 @@ export class MinecraftBridge {
 
     private tokens: { [name: string]: MintableToken } = {};
     public poolManager: PoolManager;
+    
+    public minecraftsshd: MinecraftSSH;
+    public minecraftlogs: MinecraftSSH;
 
     private stdin: any;
 
@@ -80,19 +89,35 @@ export class MinecraftBridge {
         if(!await this.isOwnerOf(this.lands)) return log(danger(`You are not the owner of this Lands Contract.`));
         log(`Initializing pool manager...`);
         await this.poolManager.init();
-        log(`Starting spigot...`);
+        log(`Connecting to SSHD...`);
         
-        await this.initSpigot();
+        this.minecraftsshd = new MinecraftSSH({
+            host: this.options.host,
+            port: this.options.ports.sshd,
+            privateKey: this.options.sshKey,
+            username: this.options.username
+        });
 
+        await this.minecraftsshd.connect();
+
+        log(`Connecting to SSHD logs...`);
+        this.minecraftlogs = await MinecraftSSHDLogs({
+            host: this.options.host,
+            port: this.options.ports.logs,
+            privateKey: this.options.sshKey,
+            username: this.options.username
+        }, this.options.logsPath);
+
+        log(`Configuring streams...`);
+
+        this.configureStreams(this.minecraftsshd.stdin, this.minecraftlogs);
+
+        await User.register(this, "GodKmi", "0x014334C5c94051A21d50cDdAD77D2Db0098786B9")
         log(`Success!`);
     }
 
-    async initSpigot () {
+    async configureStreams (stdin, stdout) {
         try {
-            var { stdout, stderr, stdin } = exec(`${this.options.javaBin} -Xms4G -Xmx4G -XX:+UseG1GC -jar ${this.options.spigotBin} nogui`, {
-                cwd: this.options.serverPath
-            });
-
             this.stdin = stdin;
     
             var lines = readline.createInterface({
@@ -102,12 +127,12 @@ export class MinecraftBridge {
     
             stdout.pipe(process.stdout);
             process.stdin.pipe(stdin);
-            stderr.pipe(process.stdout);
         } catch (exc) {
-            log(danger("Could not start spigot service:"), exc.message);
+            log(danger("Could not configure streams:"), exc.message);
         }
 
         for await (const line of lines) {
+            console.log("LINE --> ", line)
             if(line.substring(line.indexOf(" [") + 1).trim() == "[Server thread/INFO]: [Skript] Finished loading.") {
                 await Land.setup(this);
             }
@@ -191,4 +216,5 @@ export class MinecraftBridge {
 }
 
 import { PoolManager } from "./pools";
-import { Land } from "./land";
+import { Land } from "./land";import { MinecraftSSH, MinecraftSSHD, MinecraftSSHDLogs } from "@mysticaldragon/minecraftsshd";
+

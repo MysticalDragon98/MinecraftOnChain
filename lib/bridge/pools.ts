@@ -22,7 +22,7 @@ export class PoolManager {
     }
 
     async init () {
-        this.commonToken = await this.bridge.token(this.options.commonToken);
+        this.commonToken = await this.bridge.token(this.options.commonToken, true);
 
         this.factory = new this.bridge.web3.eth.Contract(require("../../contracts/abi/UniswapV2Factory.json"), this.options.contracts.factory);
         this.router = new this.bridge.web3.eth.Contract(require("../../contracts/abi/UniswapV2Router02.json"), this.options.contracts.router);

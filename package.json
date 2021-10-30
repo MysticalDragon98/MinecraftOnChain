@@ -5,6 +5,7 @@
   "author": "Camilo Torres <camilotd1999@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@mysticaldragon/minecraftsshd": "^1.0.1",
     "@truffle/hdwallet-provider": "^1.4.1",
     "@types/node": "^15.12.4",
     "chalk": "^4.1.1",
