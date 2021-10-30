@@ -132,7 +132,6 @@ export class MinecraftBridge {
         }
 
         for await (const line of lines) {
-            console.log("LINE --> ", line)
             if(line.substring(line.indexOf(" [") + 1).trim() == "[Server thread/INFO]: [Skript] Finished loading.") {
                 await Land.setup(this);
             }
