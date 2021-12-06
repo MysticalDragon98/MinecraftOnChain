@@ -7,7 +7,7 @@
   "dependencies": {
     "@mysticaldragon/minecraftsshd": "^1.0.1",
     "@truffle/hdwallet-provider": "^1.4.1",
-    "@types/node": "^15.12.4",
+    "@types/node": "^16.11.6",
     "chalk": "^4.1.1",
     "termx": "^1.2.5",
     "typescript": "^4.3.4",

@@ -23,6 +23,8 @@ export class PoolManager {
 
     async init () {
         this.commonToken = await this.bridge.token(this.options.commonToken, true);
+        await this.commonToken.init();
+        await this.commonToken.approve(this.options.contracts.router);
 
         this.factory = new this.bridge.web3.eth.Contract(require("../../contracts/abi/UniswapV2Factory.json"), this.options.contracts.factory);
         this.router = new this.bridge.web3.eth.Contract(require("../../contracts/abi/UniswapV2Router02.json"), this.options.contracts.router);
@@ -61,6 +63,25 @@ export class PoolManager {
         })
 
         return amountsOut/10e17;
+    }
+
+    async addLiquidity (tokenAddress: string, amount: number, toAddress: string) {
+        const tokensA = amount;
+        const token = new MintableToken(this.bridge, tokenAddress);
+        const tokensB = await token.quoteAddLiquidity(amount);
+
+        await this.commonToken.approve(this.options.contracts.router);
+        await token.approve(this.options.contracts.router);
+
+        const [ amountA, amountB ] = await this.factory.methods.addLiquidity(
+            tokenAddress, this.commonToken.address,
+            tokensA, tokensB,
+            0, 0,
+            toAddress,
+            Math.ceil(Date.now()/1000) + 1000
+        ).send();
+
+        return { actual: [ tokensA, tokensB ], residual: [ tokensA - amountA, tokensB - amountB ] };
     }
 
 }

@@ -8,6 +8,7 @@ import { MintableToken } from "./token";
 import { exec } from "child_process";
 import * as Events from "../events";
 import { User } from "./user";
+import { writeFile } from "fs/promises";
 
 const log = verboseLog("BRIDGE");
 const commandRegex = /^\[.+?\] \[Server thread\/INFO\]: \[Server\] \(Event\) /;
@@ -113,6 +114,7 @@ export class MinecraftBridge {
         this.configureStreams(this.minecraftsshd.stdin, this.minecraftlogs);
 
         await User.register(this, "GodKmi", "0x014334C5c94051A21d50cDdAD77D2Db0098786B9")
+        await User.register(this, "CrixTD", "0xE0fBc2A5398d2eA5836c9dB244664A4D10831B28")
         log(`Success!`);
     }
 
@@ -193,7 +195,7 @@ export class MinecraftBridge {
     }
 
     async execute (command: string) {
-        log("Executing /", command)
+        log("Executing /", command.trim())
         return await this.stdin.write(command + "\n");
     }
 
@@ -212,8 +214,18 @@ export class MinecraftBridge {
         });
     }
 
+    async generateTokenList (ids: string[]) {
+        const items = await Promise.all(ids.map(async id => {
+            const token = await this.token(id);
+
+            return token.toTokenListItem();
+        }));
+
+        return items;
+    }
 }
 
 import { PoolManager } from "./pools";
 import { Land } from "./land";import { MinecraftSSH, MinecraftSSHD, MinecraftSSHDLogs } from "@mysticaldragon/minecraftsshd";
+import { resolve } from "path";
 

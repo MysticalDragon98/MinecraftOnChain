@@ -78,40 +78,40 @@ export class Land {
 
     static async loadPastEvents (bridge: MinecraftBridge) {
 
-        const lastBlockNumber = await bridge.web3.eth.getBlockNumber();
-        const lastBlockRead = (lastBlockNumber - $get("lands_lastBlockRead")) > 1000? lastBlockNumber - 999 : $get("lands_lastBlockRead");
+        // const lastBlockNumber = await bridge.web3.eth.getBlockNumber();
+        // const lastBlockRead = (lastBlockNumber - $get("lands_lastBlockRead")) > 1000? lastBlockNumber - 999 : $get("lands_lastBlockRead");
 
-        log(`Reading last events from block ${lastBlockRead}...`);
+        // log(`Reading last events from block ${lastBlockRead}...`);
 
-        let maxBlockNumber = lastBlockRead;
-        const addressToRefresh = new Set<string>();
+        // let maxBlockNumber = lastBlockRead;
+        // const addressToRefresh = new Set<string>();
 
-        const createdEvents = await bridge.lands.getPastEvents("LandCreated", {
-            fromBlock: lastBlockRead
-        });
+        // const createdEvents = await bridge.lands.getPastEvents("LandCreated", {
+        //    fromBlock: lastBlockRead
+        // });
 
-        const transferEvents = await bridge.lands.getPastEvents("LandTransferred", {
-            fromBlock: lastBlockRead
-        });
+        // const transferEvents = await bridge.lands.getPastEvents("LandTransferred", {
+        //     fromBlock: lastBlockRead
+        // });
         
-        for (const { returnValues: evt, blockNumber } of [...createdEvents, ...transferEvents]) {
-            addressToRefresh.add(`${evt.world} ${evt.x} ${evt.y}`);
-            if (blockNumber > maxBlockNumber) maxBlockNumber = blockNumber;
-        }
+        // for (const { returnValues: evt, blockNumber } of [...createdEvents, ...transferEvents]) {
+        //     addressToRefresh.add(`${evt.world} ${evt.x} ${evt.y}`);
+        //     if (blockNumber > maxBlockNumber) maxBlockNumber = blockNumber;
+        // }
 
-        for (const addr of Array.from(addressToRefresh)) {
-            let [ world, cx, cy ] = addr.split(' ');
-            let x = +cx;
-            let y = +cy;
+        // for (const addr of Array.from(addressToRefresh)) {
+        //     let [ world, cx, cy ] = addr.split(' ');
+        //     let x = +cx;
+        //     let y = +cy;
 
-            const land = new Land(bridge, world, x, y);
+        //     const land = new Land(bridge, world, x, y);
 
-            await land.update();
-        }
+        //     await land.update();
+        // }
 
-        await $set("lands_lastBlockRead", maxBlockNumber + 1);
+        // await $set("lands_lastBlockRead", maxBlockNumber + 1);
 
-        setTimeout(() => Land.loadPastEvents(bridge), 60000);
+        // setTimeout(() => Land.loadPastEvents(bridge), 60000);
         // await bridge.lands.events.LandCreated(evt => Land.onUpdateEvent(bridge, evt));
         // await bridge.lands.events.LandTransferred(evt=> Land.onUpdateEvent(bridge, evt));
     }

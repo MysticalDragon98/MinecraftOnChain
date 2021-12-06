@@ -1,3 +1,5 @@
+import { writeFile } from "fs/promises";
+import { resolve } from "path";
 import { $CHAIN_ID, $CONTRACT_LANDS, $CONTRACT_MASTER, $CONTRACT_REGISTRY, $ETH_ADDRESS, $ETH_PRIVATEKEY, $LOGPATH, $PROVIDER_URL, $SSHD_PORT, $SSH_HOST, $SSH_KEY, $SSH_PORT, $SSH_USERNAME } from "./env";
 import { MinecraftBridge } from "./lib/bridge";
 
@@ -17,8 +19,8 @@ export const minecraft = new MinecraftBridge({
         lands: $CONTRACT_LANDS,
         registry: $CONTRACT_REGISTRY,
         
-        uniswapV2Factory: "0xc35DADB65012eC5796536bD9864eD8773aBc74C4",
-        uniswapV2Router02: "0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506"
+        uniswapV2Factory: "0x7423C1A9e3cFd70bE50BAF475517f79974864B82",
+        uniswapV2Router02: "0x5e2aF046Fe5Aa236a818650bE0Dd57bc661Cd36f"
     },
 
     host: $SSH_HOST,
@@ -35,6 +37,35 @@ export const minecraft = new MinecraftBridge({
 
 async function main () {
     await minecraft.init();
+
+    
+    const tokenlist = await minecraft.generateTokenList([
+        "obsidian block",
+        "dirt block",
+        "gravel block",
+        "coal",
+        "string",
+        "bone",
+        "white wool block",
+        "cobblestone block",
+        "seed"
+    ]);
+
+    await writeFile(resolve(__dirname, './data/tokens.json'), JSON.stringify({
+        name: "Minecraft Anarchy",
+        "logoURI": "https://raw.githubusercontent.com/undrfined/mc-icons/master/pics/2_Grass.png",
+        "keywords": [
+            "minecraft",
+            "defi"
+        ],
+        "timestamp": new Date().toTimeString(),
+        tokens: tokenlist,
+        "version": {
+            "major": 0,
+            "minor": 0,
+            "patch": 0
+        }
+    }, null, 2));
 }
 
 main().catch(console.log);

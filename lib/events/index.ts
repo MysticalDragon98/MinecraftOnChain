@@ -4,6 +4,28 @@ const { highlight } = require('termx');
 const { warning } = require('termx');
 const log = verboseLog("EVENTS");
 
+
+export async function Send (username: string, tar: string, qty: number, ...itemArgs: any[]) {
+    const item = itemArgs.join(' ');
+    const user = await minecraft.user(username);
+    const targetUser = await minecraft.user(tar);
+
+    await user.checkRegistration();
+    await targetUser.checkRegistration(username);
+
+    log("User", username, "sent", warning(item), highlight("x" + qty), "to", tar);
+    try {
+        const token = await minecraft.token(item, true);
+        
+        await token.burn(user.address, +qty);
+        await token.mint(targetUser.address, +qty);
+
+        user.tell(`Successfully sent ${qty} ${item} to ${tar}`)
+    } catch (exc) {
+        return user.tell(`Could not send ${item} to ${tar} ${exc.message}`)
+    }
+}
+
 export async function Stake (username: string, qty: string, ...itemArgs: string[]) {
     const item = itemArgs.join(' ');
     const user = await minecraft.user(username);
@@ -62,16 +84,62 @@ export async function ViewBalance (username: string, ...itemArgs: string[]) {
     }
 }
 
-export async function Quote (username: string, amount: number, ...itemArgs: string[]) {
-    const [ itemA, itemB ] = itemArgs.join(' ').split(' <-> ');
+
+export async function Price (username: string, ...itemArgs: string[]) {
     const user = await minecraft.user(username);
-    const tokenA = await minecraft.token(itemA);
-    const tokenB = await minecraft.token(itemB);
-
-    const quote = await minecraft.poolManager.quote(tokenA.address, tokenB.address, amount);
-
-    user.tell(`${amount} ${itemA} = ${quote.toFixed(1)} ${itemB}.`);
+    try {
+        const itemA = itemArgs.join(' ');
+        const user = await minecraft.user(username);
+        const tokenA = await minecraft.token(itemA);
+        // const pool = await minecraft.poolManager.pool(tokenA.address);
+        
+        const quote = await minecraft.poolManager.quote(tokenA.address, minecraft.poolManager.commonToken.address, 1);
+    
+        user.tell(`1 ${itemA} = ${quote.toFixed(1)} ${minecraft.poolManager.commonToken.name}.`);
+    } catch (exc) {
+        user.tell(`Could not quote: ${exc.message}`)
+    }
 }
+
+export async function Invest (username: string, amount: number, ...itemArgs: string[]) {
+    const user = await minecraft.user(username);
+    try {
+        const itemA = itemArgs.join(' ');
+        const user = await minecraft.user(username);
+        const token = await minecraft.token(itemA);
+        const tokensB = await token.quoteAddLiquidity(amount);
+        const [ expectedA, expectedB ] =[ amount, tokensB ];
+
+        await token.grab(user.address, expectedA);
+        await minecraft.poolManager.commonToken.grab(user.address, expectedA);
+        
+        const {
+            actual: [ amountA, amountB ],
+            residual: [ residualA, residualB ]
+        } = await minecraft.poolManager.addLiquidity(token.address, amount, user.address);
+
+        user.tell(`Successfully invested ${amountA} ${itemA} and ${amountB} ${minecraft.poolManager.commonToken.name}.`)
+    } catch (exc) {
+        user.tell(`Could not invest: ${exc.message}`);
+    }
+
+}
+
+/*export async function Quote (username: string, amount: number, ...itemArgs: string[]) {
+    const user = await minecraft.user(username);
+    try {
+        const itemA = itemArgs.join(' ');
+        const user = await minecraft.user(username);
+        const tokenA = await minecraft.token(itemA);
+        // const pool = await minecraft.poolManager.pool(tokenA.address);
+        
+        const quote = await minecraft.poolManager.quote(tokenA.address, minecraft.poolManager.commonToken.address, amount);
+    
+        user.tell(`${amount} ${itemA} = ${quote.toFixed(1)} obsidian.`);
+    } catch (exc) {
+        user.tell(`Could not quote: ${exc.message}`)
+    }
+}*/
 
 export async function Claim (username: string, world: string, ...positionData: string[]) {
     const user = await minecraft.user(username);

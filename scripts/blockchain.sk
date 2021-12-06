@@ -14,12 +14,26 @@ command /withdraw <integer> <item>:
     trigger:
         execute console command "/say (Event) Withdraw %name of player% %arg-1% %arg-2%"
 
+command /price <item>:
+    description: Withdraws an amount of items from the cloud
+    executable by: players
+    aliases: /p
+    trigger:
+        execute console command "/say (Event) Price %name of player% %arg-1%"
+
 command /newtoken <text>:
     description: Send an amount of items to the cloud
     executable by: players
     permission: skript.give
     trigger:
         execute console command "/say (Event) NewToken %name of player% %arg-1%"
+
+command /send <player> <integer> <item>:
+    description: Send an amount of items to the cloud
+    executable by: players
+    permission: skript.give
+    trigger:
+        execute console command "/say (Event) Send %name of player% %arg-1% %arg-2% %arg-3%"
 
 command /supergive <player> <item> <integer>:
     description: Giveitem compatible with Skript

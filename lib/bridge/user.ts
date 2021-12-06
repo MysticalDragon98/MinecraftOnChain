@@ -6,6 +6,18 @@ export class User {
 
     }
 
+    get isRegistered () {
+        return this.address !== "0x0000000000000000000000000000000000000000";
+    }
+
+    async checkRegistration (teller = this.name) {
+        const tellerMsg = teller === this.name ? `You are`: `${this.name} is`;
+        if (!this.isRegistered) {
+            const tellerUser = await this.bridge.user(teller);
+            tellerUser.tell(`${teller}'nt registered yet.`)
+        }
+    }
+
     give (item: string, amount: number) {
         this.bridge.execute(`supergive ${this.name} ${item} ${amount}`);
     }
