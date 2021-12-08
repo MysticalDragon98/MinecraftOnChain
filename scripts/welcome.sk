@@ -1,13 +1,12 @@
-command /welcome:
-    trigger:
-        add 1 to {loginCount::%player%}
+on join:
+    add 1 to {loginCount::%player%}
 
-        broadcast "&6%player% &f&rWelcome to CryptoAnarchist Beta for &3%{loginCount::%player%}%&3th &ftime!"
+    broadcast "&6%player% &f&rWelcome to CryptoAnarchist Beta for &3%{loginCount::%player%}%&3th &ftime!"
 
+    message ""
+    
+    message "World Map:&r &2&nhttp://minecraft.laki.group:8080/"
+    if {ethAddress::%player%} is not set:
         message ""
-        
-        message "World Map:&r &2&nhttp://minecraft.laki.group:8080/"
-        if {ethAddress::%player%} is not set:
-            message ""
-            message "Link your eth wallet at &2&nhttp://minecraft.laki.group/"
-        message "Ethereum Address:&r &b%{ethAddress::%player%}%"
+        message "Link your eth wallet at &2&nhttp://minecraft.laki.group/"
+    message "Ethereum Address:&r &b%{ethAddress::%player%}%"
