@@ -1,0 +1,6 @@
+function UserNotRegistered(p: player) :: boolean:
+    if {ethAddress::%{_p}%} is not set:
+        send "&cYour ethereum wallet is not linked to your account, link your eth wallet at &2&nhttp://minecraft.laki.group/" to {_p}
+        return true
+
+    return false

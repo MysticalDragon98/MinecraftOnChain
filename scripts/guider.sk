@@ -1,4 +1,0 @@
-on join:
-    broadcast"Look! %player% just joined the party!"
-    send "Hello %player%, nice to see you here :) you have 5$ in your pocket! You are the richest of the party!" to player
-    send "Feel free to visit http://minparadise.io to access to discover the full experience" to player
