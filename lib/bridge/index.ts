@@ -11,7 +11,7 @@ import { User } from "./user";
 import { writeFile } from "fs/promises";
 
 const log = verboseLog("BRIDGE");
-const commandRegex = /^\(Event\).+/;
+const commandRegex = /^\[.+?\] \[Server thread\/INFO\]: \(Event\) /;
 
 interface BridgeOptions {
     // Ethereum
