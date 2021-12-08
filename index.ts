@@ -40,15 +40,6 @@ async function main () {
 
     
     const tokenlist = await minecraft.generateTokenList([
-        "obsidian block",
-        "dirt block",
-        "gravel block",
-        "coal",
-        "string",
-        "bone",
-        "white wool block",
-        "cobblestone block",
-        "seed"
     ]);
 
     await writeFile(resolve(__dirname, './data/tokens.json'), JSON.stringify({

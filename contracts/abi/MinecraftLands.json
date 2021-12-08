@@ -185,35 +185,6 @@
 				"type": "int256"
 			}
 		],
-		"name": "accessFor",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "access",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "world",
-				"type": "string"
-			},
-			{
-				"internalType": "int256",
-				"name": "x",
-				"type": "int256"
-			},
-			{
-				"internalType": "int256",
-				"name": "y",
-				"type": "int256"
-			}
-		],
 		"name": "landOwner",
 		"outputs": [
 			{
@@ -245,6 +216,11 @@
 		],
 		"name": "lands",
 		"outputs": [
+			{
+				"internalType": "string",
+				"name": "world",
+				"type": "string"
+			},
 			{
 				"internalType": "int256",
 				"name": "x",

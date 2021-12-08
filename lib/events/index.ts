@@ -145,8 +145,8 @@ export async function Claim (username: string, world: string, ...positionData: s
     const user = await minecraft.user(username);
     const lastClaim = $get(`lands_lastClaim[${username}]`);
     
-    /*if (lastClaim && (Date.now() - lastClaim) < 24 * 60 * 60 * 1000)
-        return user.tell(`You only can claim lands once each day, come back tomorrow for more :p`);*/
+    if (lastClaim && (Date.now() - lastClaim) < 24 * 60 * 60 * 1000)
+        return user.tell(`You only can claim lands once each day, come back tomorrow for more :p`);
     
     await $set(`lands_lastClaim[${username}]`, Date.now())
 

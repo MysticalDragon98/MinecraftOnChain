@@ -9,36 +9,38 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MinecraftLands is Ownable {
     
     struct Land {
-        uint x;
-        uint y;
+        string world;
+        int x;
+        int y;
+
         address owner;
     }
     
-    mapping (uint => mapping(uint => Land)) public lands;
+    mapping (string => mapping(int => mapping(int => Land))) public lands;
     
-    event LandCreated(uint x, uint y, address indexed owner);
-    event LandTransferred(uint x, uint y, address indexed source, address indexed target);
+    event LandCreated(string world, int x, int y, address indexed owner);
+    event LandTransferred(string world, int x, int y, address indexed source, address indexed target);
     
     constructor () {
         
     }
     
-    function createLand (uint x, uint y, address owner) public onlyOwner {
-        require(landOwner(x, y) == 0x0000000000000000000000000000000000000000);
-        lands[x][y] = Land(x, y, owner);
+    function createLand (string memory world, int x, int y, address owner) public onlyOwner {
+        require(landOwner(world, x, y) == 0x0000000000000000000000000000000000000000);
+        lands[world][x][y] = Land(world, x, y, owner);
         
-        emit LandCreated(x, y, owner);
+        emit LandCreated(world, x, y, owner);
     }
     
-    function transferLand (uint x, uint y, address newOwner) public {
-        require(landOwner(x, y) == msg.sender, "You are not the owner of this land");
+    function transferLand (string memory world, int x, int y, address newOwner) public {
+        require(landOwner(world, x, y) == msg.sender, "You are not the owner of this land");
         
-        lands[x][y].owner = newOwner;
-        emit LandTransferred(x, y, msg.sender, newOwner);
+        lands[world][x][y].owner = newOwner;
+        emit LandTransferred(world, x, y, msg.sender, newOwner);
     }
     
-    function landOwner (uint x, uint y) public view returns (address owner) {
-        return lands[x][y].owner;
+    function landOwner (string memory world, int x, int y) public view returns (address owner) {
+        return lands[world][x][y].owner;
     }
     
 }
