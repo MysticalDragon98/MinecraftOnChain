@@ -1,3 +1,41 @@
+command /storeline <integer>:
+    trigger:
+        if UserNotRegistered(player) is true:
+            stop
+
+        set {_row} to arg-1
+        set {_padding} to ({_row} * 9 - 1)
+        loop 9 times:
+            set {_slot} to loop-value + {_padding}
+            set {_item} to slot {_slot} of player's inventory
+            set {_itemType} to {_item}'s type
+            set {_itemCount} to amount of {_item} in the player's inventory
+
+            if {_alreadyCounted.%{_itemType}%} is not true:
+                if {_itemType} is not air:
+                    set {_alreadyCounted.%{_itemType}%} to true
+
+                    execute player command "/store %{_itemCount}% %{_itemType}%"
+
+command /storeinventory:
+    trigger:
+        if UserNotRegistered(player) is true:
+            stop
+
+        set {_padding} to 9
+        loop 27 times:
+            set {_slot} to loop-value + {_padding}
+            set {_item} to slot {_slot} of player's inventory
+            set {_itemType} to {_item}'s type
+            set {_itemCount} to amount of {_item} in the player's inventory
+
+            if {_alreadyCounted.%{_itemType}%} is not true:
+                if {_itemType} is not air:
+                    set {_alreadyCounted.%{_itemType}%} to true
+
+                    execute player command "/store %{_itemCount}% %{_itemType}%"
+
+
 command /store <integer> <item>:
     description: Send an amount of items to the cloud
     executable by: players
