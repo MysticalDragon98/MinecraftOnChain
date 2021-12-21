@@ -14,7 +14,6 @@ command /storeline <integer>:
             if {_alreadyCounted.%{_itemType}%} is not true:
                 if {_itemType} is not air:
                     set {_alreadyCounted.%{_itemType}%} to true
-
                     execute player command "/store %{_itemCount}% %{_itemType}%"
 
 command /storeinventory:
@@ -47,7 +46,7 @@ command /store <integer> <item>:
         if player has arg-1 of arg-2:
             remove arg-1 of arg-2 from player's inventory
             send "(Event) Stake %name of player% %arg-1% %arg-2%" to console
-            broadcast "(Event) Stake %name of player% %arg-1% %arg-2%"
+            broadcast "%name of player% stakes %arg-1% %arg-2%"
 
 command /withdraw <integer> <item>:
     description: Withdraws an amount of items from the cloud
